@@ -4,12 +4,14 @@ package com.phani.recipehub.search.ui.navigation
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.phani.recipehub.common.navigation.FeatureApi
 import com.phani.recipehub.common.navigation.NavigationRoute
 import com.phani.recipehub.common.navigation.NavigationSubGraphRoute
 import com.phani.recipehub.search.ui.screens.details.RecipeDetailsScreen
+import com.phani.recipehub.search.ui.screens.list.RecipeList
 import com.phani.recipehub.search.ui.screens.list.RecipeListScreen
 import com.phani.recipehub.search.ui.screens.list.RecipeListViewModel
 
@@ -18,7 +20,7 @@ interface SearchFeatureApi : FeatureApi
 class SearchFeatureApiImpl : SearchFeatureApi {
     override fun registerGraph(
         navGraphBuilder: NavGraphBuilder,
-        navController: NavController
+        navController: NavHostController
     ) {
         navGraphBuilder.navigation(
             route = NavigationSubGraphRoute.Search.route,
@@ -26,8 +28,8 @@ class SearchFeatureApiImpl : SearchFeatureApi {
         ) {
             composable(route = NavigationRoute.RecipeList.route) {
                 val recipeListViewModel = hiltViewModel<RecipeListViewModel>()
-                RecipeListScreen(viewModel = recipeListViewModel) {
-
+                RecipeListScreen(viewModel = recipeListViewModel, navHostController = navController) {
+                    recipeListViewModel.onEvent(RecipeList.Event.GoToRecipeDetails(it))
                 }
             }
 

@@ -21,4 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "RecipeHub"
 include(":app")
- 
+include(":common")
+include(":media_player")
+include(":feature:search:ui")
+include(":feature:search:domian")
+include(":feature:search:data")

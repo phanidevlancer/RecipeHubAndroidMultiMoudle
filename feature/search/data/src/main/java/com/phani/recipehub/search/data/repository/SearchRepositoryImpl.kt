@@ -29,9 +29,9 @@ class SearchRepositoryImpl(
     override suspend fun getRecipeDetails(id: String): Result<RecipeDetails> {
         return try {
             val response = searchApiService.getRecipeDetails(id)
-             if (response.isSuccessful) {
+            if (response.isSuccessful) {
                 response.body()?.meals?.let {
-                    if (it.isEmpty()) {
+                    if (it.isNotEmpty()) {
                         Result.success(it.first().toDomain())
                     } else {
                         Result.failure(exception = Exception("Something went wrong!"))
@@ -42,8 +42,8 @@ class SearchRepositoryImpl(
             } else {
                 Result.failure(exception = Exception("Something went wrong!"))
             }
-        }catch (e : Exception){
-            Result.failure( e)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }

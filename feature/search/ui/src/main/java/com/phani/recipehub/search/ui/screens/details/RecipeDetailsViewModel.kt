@@ -33,18 +33,21 @@ class RecipeDetailsViewModel @Inject constructor(private val getRecipeDetailsUse
         getRecipeDetailsUseCase(id).onEach { result ->
             when (result) {
                 is NetworkResult.Error -> {
+                    println("NetworkResulttttt Error details")
                     _uiState.update {
                         RecipeDetails.UiState(error = UiText.RemoteString(result.message.toString()))
                     }
                 }
 
                 is NetworkResult.Loading -> {
+                    println("NetworkResulttttt Loading details")
                     _uiState.update {
                         RecipeDetails.UiState(isLoading = true)
                     }
                 }
 
                 is NetworkResult.Success -> {
+                    println("NetworkResulttttt Success details")
                     _uiState.update {
                         RecipeDetails.UiState(data = result.data)
                     }

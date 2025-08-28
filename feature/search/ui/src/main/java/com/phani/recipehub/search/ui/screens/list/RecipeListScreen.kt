@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
@@ -121,45 +123,62 @@ fun RecipeListScreen(
                             )
                             Spacer(modifier = Modifier.height(12.dp))
 
-                            Text(
-                                text = recipe.meal.toString(),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                            Spacer(modifier = Modifier.height(12.dp))
 
-                            if (recipe.tags.isNotEmpty()) {
-                                FlowRow {
-                                    recipe.tags.split(",").forEach { str ->
-                                        Box(
-                                            modifier = Modifier
-                                                .wrapContentSize()
-                                                .background(
-                                                    Color.White,
-                                                    shape = RoundedCornerShape(12.dp)
+                            Column(
+                                modifier = Modifier
+                                    .padding(vertical = 12.dp)
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp)
+                            ) {
+                                Text(
+                                    text = recipe.meal.toString(),
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                Text(
+                                    recipe.instructions.toString(),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    overflow = TextOverflow.Ellipsis,
+                                    maxLines = 4
+                                )
+                                if (recipe.tags.isNotEmpty()) {
+                                    FlowRow {
+                                        recipe.tags.split(",").forEach { str ->
+                                            Box(
+                                                modifier = Modifier
+                                                    .wrapContentSize()
+                                                    .padding(horizontal = 0.dp, vertical = 8.dp)
+                                                    .padding(end = 4.dp)
+                                                    .background(
+                                                        Color.White,
+                                                        shape = RoundedCornerShape(24.dp)
+                                                    )
+                                                    .clip(RoundedCornerShape(24.dp))
+                                                    .border(
+                                                        width = 1.dp,
+                                                        color = Color.Red,
+                                                        shape = RoundedCornerShape(24.dp)
+                                                    ),
+
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Text(
+                                                    text = str,
+                                                    style = MaterialTheme.typography.bodySmall,
+                                                    modifier = Modifier.padding(
+                                                        vertical = 8.dp,
+                                                        horizontal = 16.dp
+                                                    )
                                                 )
-                                                .clip(RoundedCornerShape(12.dp))
-                                                .border(
-                                                    width = 1.dp,
-                                                    color = Color.Red,
-                                                    shape = RoundedCornerShape(12.dp)
-                                                ),
 
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(
-                                                text = str,
-                                                style = MaterialTheme.typography.bodySmall,
-                                                modifier = Modifier.padding(
-                                                    vertical = 4.dp,
-                                                    horizontal = 8.dp
-                                                )
-                                            )
-
+                                            }
                                         }
                                     }
+                                    Spacer(modifier = Modifier.height(8.dp))
                                 }
-                                Spacer(modifier = Modifier.height(12.dp))
                             }
+
                         }
 
                     }

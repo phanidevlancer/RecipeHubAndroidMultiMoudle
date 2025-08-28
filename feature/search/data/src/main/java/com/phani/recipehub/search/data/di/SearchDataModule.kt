@@ -1,6 +1,8 @@
 package com.phani.recipehub.search.data.di
 
 import com.phani.recipehub.search.data.remote.SearchApiService
+import com.phani.recipehub.search.data.repository.SearchRepositoryImpl
+import com.phani.recipehub.search.domian.repository.SearchRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,5 +28,9 @@ object SearchDataModule {
     fun provideSearchApiService(retrofit: Retrofit): SearchApiService = retrofit.create(
         SearchApiService::class.java
     )
+
+    @Provides
+    fun provideSearchRepo(searchApiService: SearchApiService): SearchRepository =
+        SearchRepositoryImpl(searchApiService)
 
 }

@@ -10,33 +10,40 @@ class SearchRepositoryImpl(
     private val searchApiService: SearchApiService
 ) : SearchRepository {
     override suspend fun getRecipes(s: String): Result<List<Recipe>> {
-        val response = searchApiService.getRecipes(s)
-        return if (response.isSuccessful) {
-            response.body()?.meals?.let {
-                Result.success(it.toDomain())
-            } ?: run {
+        return try {
+            val response = searchApiService.getRecipes(s)
+            if (response.isSuccessful) {
+                response.body()?.meals?.let {
+                    Result.success(it.toDomain())
+                } ?: run {
+                    Result.failure(exception = Exception("Something went wrong!"))
+                }
+            } else {
                 Result.failure(exception = Exception("Something went wrong!"))
             }
-        } else {
-            Result.failure(exception = Exception("Something went wrong!"))
+        } catch (e: Exception) {
+            Result.failure(e)
         }
-
     }
 
     override suspend fun getRecipeDetails(id: String): Result<RecipeDetails> {
-        val response = searchApiService.getRecipeDetails(id)
-        return if (response.isSuccessful) {
-            response.body()?.meals?.let {
-                if (it.isEmpty()) {
-                    Result.success(it.first().toDomain())
-                } else {
+        return try {
+            val response = searchApiService.getRecipeDetails(id)
+             if (response.isSuccessful) {
+                response.body()?.meals?.let {
+                    if (it.isEmpty()) {
+                        Result.success(it.first().toDomain())
+                    } else {
+                        Result.failure(exception = Exception("Something went wrong!"))
+                    }
+                } ?: run {
                     Result.failure(exception = Exception("Something went wrong!"))
                 }
-            } ?: run {
+            } else {
                 Result.failure(exception = Exception("Something went wrong!"))
             }
-        } else {
-            Result.failure(exception = Exception("Something went wrong!"))
+        }catch (e : Exception){
+            Result.failure( e)
         }
     }
 }

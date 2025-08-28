@@ -45,6 +45,7 @@ import com.phani.recipehub.common.utils.UiText
 @Composable
 fun RecipeDetailsScreen(
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
     viewModel: RecipeDetailsViewModel
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -62,7 +63,7 @@ fun RecipeDetailsScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* hook your nav back if needed */ }) {
+                    IconButton(onClick = { onBackClick() }) {
                         Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
                     }
                 },

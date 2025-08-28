@@ -47,7 +47,9 @@ class SearchFeatureApiImpl : SearchFeatureApi {
                         recipeDetailsViewModel.onEvent(RecipeDetails.Event.FetchRecipeDetails(it))
                     }
                 }
-                RecipeDetailsScreen(viewModel = recipeDetailsViewModel)
+                RecipeDetailsScreen(viewModel = recipeDetailsViewModel, onBackClick = {
+                    navController.navigateUp()
+                })
             }
         }
     }

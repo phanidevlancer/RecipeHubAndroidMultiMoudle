@@ -7,6 +7,7 @@ import com.phani.recipehub.common.utils.UiText
 import com.phani.recipehub.search.domain.model.Recipe
 import com.phani.recipehub.search.domain.usecase.GetRecipeDetailsUseCase
 import com.phani.recipehub.search.domain.usecase.GetAllRecipeUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class RecipeListViewModel @Inject constructor(
     private val getAllRecipeUseCase: GetAllRecipeUseCase,
     private val getRecipeDetailsUseCase: GetRecipeDetailsUseCase
@@ -38,20 +40,26 @@ class RecipeListViewModel @Inject constructor(
     private fun search(q: String) {
         getAllRecipeUseCase(q).onEach { result ->
             when (result) {
+
                 is NetworkResult.Error -> {
+                    println("NetworkResultttt Error")
                     _uiState.update {
                         RecipeList.UiState(error = UiText.RemoteString(result.message.toString()))
                     }
                 }
 
                 is NetworkResult.Loading -> {
+                    println("NetworkResultttt loading")
                     _uiState.update {
                         RecipeList.UiState(isLoading = true)
                     }
                 }
 
                 is NetworkResult.Success -> {
-                    RecipeList.UiState(data = result.data)
+                    println("NetworkResultttt Success : "+result.data)
+                    _uiState.update {
+                        RecipeList.UiState(data = result.data)
+                    }
                 }
             }
         }.launchIn(viewModelScope)

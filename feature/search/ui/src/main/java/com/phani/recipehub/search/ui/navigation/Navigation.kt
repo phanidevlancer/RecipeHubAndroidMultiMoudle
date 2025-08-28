@@ -1,6 +1,7 @@
 package com.phani.recipehub.search.ui.navigation
 
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -10,6 +11,7 @@ import com.phani.recipehub.common.navigation.NavigationRoute
 import com.phani.recipehub.common.navigation.NavigationSubGraphRoute
 import com.phani.recipehub.search.ui.screens.details.RecipeDetailsScreen
 import com.phani.recipehub.search.ui.screens.list.RecipeListScreen
+import com.phani.recipehub.search.ui.screens.list.RecipeListViewModel
 
 interface SearchFeatureApi : FeatureApi
 
@@ -23,7 +25,10 @@ class SearchFeatureApiImpl : SearchFeatureApi {
             startDestination = NavigationRoute.RecipeList.route
         ) {
             composable(route = NavigationRoute.RecipeList.route) {
-                RecipeListScreen()
+                val recipeListViewModel = hiltViewModel<RecipeListViewModel>()
+                RecipeListScreen(viewModel = recipeListViewModel) {
+
+                }
             }
 
             composable(route = NavigationRoute.RecipeDetails.route) {

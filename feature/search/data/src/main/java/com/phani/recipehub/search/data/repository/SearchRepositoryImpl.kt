@@ -2,9 +2,9 @@ package com.phani.recipehub.search.data.repository
 
 import com.phani.recipehub.search.data.mapper.toDomain
 import com.phani.recipehub.search.data.remote.SearchApiService
-import com.phani.recipehub.search.domian.model.Recipe
-import com.phani.recipehub.search.domian.model.RecipeDetails
-import com.phani.recipehub.search.domian.repository.SearchRepository
+import com.phani.recipehub.search.domain.model.Recipe
+import com.phani.recipehub.search.domain.model.RecipeDetails
+import com.phani.recipehub.search.domain.repository.SearchRepository
 
 class SearchRepositoryImpl(
     private val searchApiService: SearchApiService

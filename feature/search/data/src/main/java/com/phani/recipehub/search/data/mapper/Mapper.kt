@@ -1,8 +1,8 @@
 package com.phani.recipehub.search.data.mapper
 
 import com.phani.recipehub.search.data.model.MealDTO
-import com.phani.recipehub.search.domian.model.Recipe
-import com.phani.recipehub.search.domian.model.RecipeDetails
+import com.phani.recipehub.search.domain.model.Recipe
+import com.phani.recipehub.search.domain.model.RecipeDetails
 import kotlin.String
 
 fun List<MealDTO>.toDomain(): List<Recipe> = map {

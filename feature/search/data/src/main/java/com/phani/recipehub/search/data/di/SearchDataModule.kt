@@ -2,7 +2,7 @@ package com.phani.recipehub.search.data.di
 
 import com.phani.recipehub.search.data.remote.SearchApiService
 import com.phani.recipehub.search.data.repository.SearchRepositoryImpl
-import com.phani.recipehub.search.domian.repository.SearchRepository
+import com.phani.recipehub.search.domain.repository.SearchRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

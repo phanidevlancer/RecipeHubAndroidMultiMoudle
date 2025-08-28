@@ -1,0 +1,70 @@
+package com.phani.recipehub.search.ui.screens.details
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.phani.recipehub.common.utils.NetworkResult
+import com.phani.recipehub.common.utils.UiText
+import com.phani.recipehub.search.domain.usecase.GetRecipeDetailsUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
+import javax.inject.Inject
+
+class RecipeDetailsViewModel @Inject constructor(private val getRecipeDetailsUseCase: GetRecipeDetailsUseCase) :
+    ViewModel() {
+
+    private val _uiState = MutableStateFlow(RecipeDetails.UiState())
+    val uiState: StateFlow<RecipeDetails.UiState> get() = _uiState.asStateFlow()
+
+    fun onEvent(event: RecipeDetails.Event) {
+        when (event) {
+            is RecipeDetails.Event.FetchRecipeDetails -> {
+                getRecipeDetails(event.id)
+            }
+        }
+    }
+
+    private fun getRecipeDetails(id: String) =
+        getRecipeDetailsUseCase(id).onEach { result ->
+            when (result) {
+                is NetworkResult.Error -> {
+                    _uiState.update {
+                        RecipeDetails.UiState(error = UiText.RemoteString(result.message.toString()))
+                    }
+                }
+
+                is NetworkResult.Loading -> {
+                    _uiState.update {
+                        RecipeDetails.UiState(isLoading = true)
+                    }
+                }
+
+                is NetworkResult.Success -> {
+                    _uiState.update {
+                        RecipeDetails.UiState(data = result.data)
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
+}
+
+object RecipeDetails {
+
+    data class UiState(
+        val isLoading: Boolean = false,
+        val error: UiText = UiText.Idle,
+        val data: com.phani.recipehub.search.domain.model.RecipeDetails? = null
+    )
+
+    sealed interface Navigation {
+
+    }
+
+    sealed interface Event {
+        data class FetchRecipeDetails(val id: String) : Event
+    }
+
+}

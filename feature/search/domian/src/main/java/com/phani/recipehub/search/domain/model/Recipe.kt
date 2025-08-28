@@ -1,4 +1,4 @@
-package com.phani.recipehub.search.domian.model
+package com.phani.recipehub.search.domain.model
 
 interface IRecipe {
     val idMeal: String?

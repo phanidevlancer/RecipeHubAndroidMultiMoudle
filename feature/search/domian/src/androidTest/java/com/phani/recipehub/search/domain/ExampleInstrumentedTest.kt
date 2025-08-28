@@ -1,4 +1,4 @@
-package com.phani.recipehub.search.domian
+package com.phani.recipehub.search.domain
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

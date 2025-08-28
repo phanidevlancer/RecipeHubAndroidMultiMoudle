@@ -1,8 +1,8 @@
-package com.phani.recipehub.search.domian.usecase
+package com.phani.recipehub.search.domain.usecase
 
 import com.phani.recipehub.common.utils.NetworkResult
-import com.phani.recipehub.search.domian.model.Recipe
-import com.phani.recipehub.search.domian.repository.SearchRepository
+import com.phani.recipehub.search.domain.model.Recipe
+import com.phani.recipehub.search.domain.repository.SearchRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow

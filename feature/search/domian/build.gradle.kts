@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.phani.recipehub.search.domian"
+    namespace = "com.phani.recipehub.search.domain"
     compileSdk = 36
 
     defaultConfig {

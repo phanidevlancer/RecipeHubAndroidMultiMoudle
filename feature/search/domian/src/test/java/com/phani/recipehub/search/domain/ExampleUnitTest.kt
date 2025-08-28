@@ -1,4 +1,4 @@
-package com.phani.recipehub.search.domian
+package com.phani.recipehub.search.domain
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.phani.recipehub.search.domian.di
+package com.phani.recipehub.search.domain.di
 
 import dagger.Module
 import dagger.hilt.InstallIn

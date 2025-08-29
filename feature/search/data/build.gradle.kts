@@ -37,7 +37,7 @@ android {
 
 dependencies {
 
-    implementation(project(":feature:search:domian"))
+    implementation(project(":feature:search:domain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

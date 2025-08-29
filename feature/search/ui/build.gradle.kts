@@ -41,7 +41,7 @@ android {
 dependencies {
 
 
-    implementation(project(":feature:search:domian"))
+    implementation(project(":feature:search:domain"))
     implementation(project(":common"))
 
 

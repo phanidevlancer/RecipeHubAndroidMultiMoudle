@@ -45,7 +45,7 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":feature:search:data"))
-    implementation(project(":feature:search:domian"))
+    implementation(project(":feature:search:domain"))
     implementation(project(":feature:search:ui"))
     implementation(project(":media_player"))
 

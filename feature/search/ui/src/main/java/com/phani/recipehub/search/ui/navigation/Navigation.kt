@@ -22,8 +22,7 @@ interface SearchFeatureApi : FeatureApi
 
 class SearchFeatureApiImpl : SearchFeatureApi {
     override fun registerGraph(
-        navGraphBuilder: NavGraphBuilder,
-        navController: NavHostController
+        navGraphBuilder: NavGraphBuilder, navController: NavHostController
     ) {
         navGraphBuilder.navigation(
             route = NavigationSubGraphRoute.Search.route,
@@ -32,8 +31,7 @@ class SearchFeatureApiImpl : SearchFeatureApi {
             composable(route = NavigationRoute.RecipeList.route) {
                 val recipeListViewModel = hiltViewModel<RecipeListViewModel>()
                 RecipeListScreen(
-                    viewModel = recipeListViewModel,
-                    navHostController = navController
+                    viewModel = recipeListViewModel, navHostController = navController
                 ) {
                     recipeListViewModel.onEvent(RecipeList.Event.GoToRecipeDetails(it))
                 }
@@ -42,13 +40,17 @@ class SearchFeatureApiImpl : SearchFeatureApi {
             composable(route = NavigationRoute.RecipeDetails.route) {
                 val recipeDetailsViewModel = hiltViewModel<RecipeDetailsViewModel>()
                 val mealId = it.arguments?.getString("id")
-                LaunchedEffect(mealId){
+                LaunchedEffect(mealId) {
                     mealId?.let {
                         recipeDetailsViewModel.onEvent(RecipeDetails.Event.FetchRecipeDetails(it))
                     }
                 }
                 RecipeDetailsScreen(viewModel = recipeDetailsViewModel, onBackClick = {
                     navController.navigateUp()
+                }, onFavClick = {
+
+                }, onDeleteClick = {
+
                 })
             }
         }

@@ -16,6 +16,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Search
@@ -36,20 +39,37 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.phani.recipehub.common.utils.UiText
+import com.phani.recipehub.search.domain.model.RecipeDetails
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeDetailsScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    onFavClick: (RecipeDetails) -> Unit,
+    onDeleteClick: (RecipeDetails) -> Unit,
     viewModel: RecipeDetailsViewModel
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val scrollBehavior = exitUntilCollapsedScrollBehavior()
+
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(viewModel.navigation) {
+        viewModel.navigation.flowWithLifecycle(lifecycleOwner.lifecycle).collectLatest {
+            when (it) {
+                com.phani.recipehub.search.ui.screens.details.RecipeDetails.Navigation.Back -> onBackClick()
+            }
+        }
+    }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -63,9 +83,21 @@ fun RecipeDetailsScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { onBackClick() }) {
+                    IconButton(onClick = { viewModel.onEvent(com.phani.recipehub.search.ui.screens.details.RecipeDetails.Event.NavigateBack) }) {
                         Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
                     }
+                },
+                actions = {
+                    IconButton(onClick = {
+                        onFavClick(uiState.value.data!!)
+                    }) {
+                        Icon(Icons.Default.Star, contentDescription = "Star icon")
+                    }
+
+                    IconButton(onClick = { onDeleteClick(uiState.value.data!!) }) {
+                        Icon(Icons.Default.Delete, contentDescription = "delete icon")
+                    }
+
                 },
                 scrollBehavior = scrollBehavior
             )

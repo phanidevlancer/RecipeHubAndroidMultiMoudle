@@ -4,7 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.phani.recipehub.common.utils.NetworkResult
 import com.phani.recipehub.common.utils.UiText
+import com.phani.recipehub.search.domain.usecase.DeleteRecipeUseCase
+import com.phani.recipehub.search.domain.usecase.GetAllRecipesFromLocalDBUseCase
 import com.phani.recipehub.search.domain.usecase.GetRecipeDetailsUseCase
+import com.phani.recipehub.search.domain.usecase.InsertRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +22,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RecipeDetailsViewModel @Inject constructor(private val getRecipeDetailsUseCase: GetRecipeDetailsUseCase) :
+class RecipeDetailsViewModel @Inject constructor(
+    private val getRecipeDetailsUseCase: GetRecipeDetailsUseCase,
+    private val deleteRecipeUseCase: DeleteRecipeUseCase,
+    private val insertRecipeUseCase: InsertRecipeUseCase,
+) :
     ViewModel() {
 
     private val _uiState = MutableStateFlow(RecipeDetails.UiState())
@@ -38,6 +45,14 @@ class RecipeDetailsViewModel @Inject constructor(private val getRecipeDetailsUse
                 viewModelScope.launch {
                     _navigation.send(RecipeDetails.Navigation.Back)
                 }
+            }
+
+            is RecipeDetails.Event.DeleteRecipe -> {
+                deleteRecipeUseCase(event.recipe).launchIn(viewModelScope)
+            }
+
+            is RecipeDetails.Event.InsertRecipe -> {
+                insertRecipeUseCase(event.recipe).launchIn(viewModelScope)
             }
         }
     }
@@ -83,6 +98,9 @@ object RecipeDetails {
 
     sealed interface Event {
         data class FetchRecipeDetails(val id: String) : Event
+
+        data class InsertRecipe(val recipe: com.phani.recipehub.search.domain.model.Recipe) : Event
+        data class DeleteRecipe(val recipe: com.phani.recipehub.search.domain.model.Recipe) : Event
 
         data object NavigateBack : Event
     }

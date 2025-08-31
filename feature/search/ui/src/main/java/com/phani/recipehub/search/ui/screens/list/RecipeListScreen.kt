@@ -20,6 +20,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -65,11 +66,24 @@ fun RecipeListScreen(
             when (it) {
                 is RecipeList.Navigation.GoToRecipeDetails ->
                     navHostController.navigate(NavigationRoute.RecipeDetails.sendId(it.id))
+
+                RecipeList.Navigation.GoToFavoriteScreen -> navHostController.navigate(
+                    NavigationRoute.Favorite.route
+                )
             }
+
+
         }
     }
 
     Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                viewModel.onEvent(RecipeList.Event.FavoriteScreen)
+            }) {
+                Icon(imageVector = Icons.Rounded.Star, contentDescription = null)
+            }
+        },
         topBar = {
             SearchTopBar(
 
@@ -298,7 +312,7 @@ private fun SearchTopBar(
 }
 
 @Composable
-private fun Chip(text: String, onClick: () -> Unit) {
+fun Chip(text: String, onClick: () -> Unit) {
     AssistChip(
         onClick = onClick,
         label = { Text(text) },
@@ -359,7 +373,7 @@ private fun ErrorState(modifier: Modifier = Modifier) {
 /* --------- Shimmer for image loading --------- */
 
 @Composable
-private fun ShimmerBox(height: Dp) {
+fun ShimmerBox(height: Dp) {
     val transition = rememberInfiniteTransition(label = "shimmer")
     val x by transition.animateFloat(
         initialValue = 0f,

@@ -14,6 +14,8 @@ import com.phani.recipehub.common.navigation.NavigationSubGraphRoute
 import com.phani.recipehub.search.ui.screens.details.RecipeDetails
 import com.phani.recipehub.search.ui.screens.details.RecipeDetailsScreen
 import com.phani.recipehub.search.ui.screens.details.RecipeDetailsViewModel
+import com.phani.recipehub.search.ui.screens.favorite.FavoriteScreen
+import com.phani.recipehub.search.ui.screens.favorite.FavoriteViewModel
 import com.phani.recipehub.search.ui.screens.list.RecipeList
 import com.phani.recipehub.search.ui.screens.list.RecipeListScreen
 import com.phani.recipehub.search.ui.screens.list.RecipeListViewModel
@@ -47,11 +49,18 @@ class SearchFeatureApiImpl : SearchFeatureApi {
                 }
                 RecipeDetailsScreen(viewModel = recipeDetailsViewModel, onBackClick = {
                     navController.navigateUp()
-                }, onFavClick = {
-
-                }, onDeleteClick = {
-
+                }, onFavClick = { recipeDetails ->
+                    recipeDetailsViewModel.onEvent(RecipeDetails.Event.InsertRecipe(recipeDetails.recipe))
+                }, onDeleteClick = { recipeDetails ->
+                    recipeDetailsViewModel.onEvent(RecipeDetails.Event.DeleteRecipe(recipeDetails.recipe))
                 })
+            }
+
+            composable(route = NavigationRoute.Favorite.route) {
+                val viewModel: FavoriteViewModel = hiltViewModel()
+                FavoriteScreen(viewModel = viewModel) {
+                    navController.navigate(NavigationRoute.RecipeDetails.sendId(it))
+                }
             }
         }
     }

@@ -5,16 +5,16 @@ import androidx.lifecycle.viewModelScope
 import com.phani.recipehub.common.utils.NetworkResult
 import com.phani.recipehub.common.utils.UiText
 import com.phani.recipehub.search.domain.model.Recipe
-import com.phani.recipehub.search.domain.usecase.GetRecipeDetailsUseCase
 import com.phani.recipehub.search.domain.usecase.GetAllRecipeUseCase
+import com.phani.recipehub.search.domain.usecase.GetRecipeDetailsUseCase
+import com.phani.recipehub.search.ui.screens.list.RecipeList.Navigation.GoToFavoriteScreen
+import com.phani.recipehub.search.ui.screens.list.RecipeList.Navigation.GoToRecipeDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -42,7 +42,13 @@ class RecipeListViewModel @Inject constructor(
 
             is RecipeList.Event.GoToRecipeDetails -> {
                 viewModelScope.launch {
-                    _navigation.send(RecipeList.Navigation.GoToRecipeDetails(event.id))
+                    _navigation.send(GoToRecipeDetails(event.id))
+                }
+            }
+
+            is RecipeList.Event.FavoriteScreen -> {
+                viewModelScope.launch {
+                    _navigation.send(GoToFavoriteScreen)
                 }
             }
         }
@@ -88,11 +94,14 @@ object RecipeList {
 
     sealed interface Navigation {
         data class GoToRecipeDetails(val id: String) : Navigation
+        data object GoToFavoriteScreen : Navigation
     }
 
     sealed interface Event {
         data class SearchRecipe(val q: String) : Event
 
         data class GoToRecipeDetails(val id: String) : Event
+
+        data object FavoriteScreen : Event
     }
 }

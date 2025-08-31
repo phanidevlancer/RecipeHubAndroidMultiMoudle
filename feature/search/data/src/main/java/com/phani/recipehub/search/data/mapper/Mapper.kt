@@ -7,7 +7,7 @@ import kotlin.String
 
 fun List<MealDTO>.toDomain(): List<Recipe> = map {
     Recipe(
-        idMeal = it.idMeal,
+        idMeal = it.idMeal ?: "",
         area = it.strArea,
         meal = it.strMeal,
         mealThumb = it.strMealThumb,
@@ -21,7 +21,7 @@ fun List<MealDTO>.toDomain(): List<Recipe> = map {
 
 fun MealDTO.toDomain(): RecipeDetails = RecipeDetails(
     recipe = Recipe(
-        idMeal = idMeal,
+        idMeal = idMeal ?: "",
         area = strArea,
         meal = strMeal,
         mealThumb = strMealThumb,

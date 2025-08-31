@@ -64,6 +64,7 @@ dependencies {
 
     //dagger
     implementation(libs.dagger.hilt)
+    debugImplementation(libs.ui.tooling)
     kapt(libs.dagger.kapt)
 
     //coil

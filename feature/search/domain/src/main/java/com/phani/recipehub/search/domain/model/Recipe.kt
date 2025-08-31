@@ -1,5 +1,8 @@
 package com.phani.recipehub.search.domain.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 interface IRecipe {
     val idMeal: String?
     val area: String?
@@ -11,8 +14,10 @@ interface IRecipe {
     val instructions: String?
 }
 
+@Entity
 data class Recipe(
-    override val idMeal: String?,
+    @PrimaryKey(false)
+    override val idMeal: String,
     override val area: String?,
     override val meal: String?,
     override val mealThumb: String?,
@@ -25,6 +30,6 @@ data class Recipe(
 
 
 data class RecipeDetails(
-    private val recipe: Recipe,
+    val recipe: Recipe,
     val ingredientsPair: List<Pair<String, String>>
 ) : IRecipe by recipe

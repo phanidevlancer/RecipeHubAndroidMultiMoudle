@@ -54,4 +54,8 @@ dependencies {
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.kapt)
 
+    //Room
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+
 }

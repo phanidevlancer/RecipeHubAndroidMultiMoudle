@@ -1,5 +1,6 @@
 package com.phani.recipehub.search.data.di
 
+import com.phani.recipehub.search.data.local.RecipeDao
 import com.phani.recipehub.search.data.remote.SearchApiService
 import com.phani.recipehub.search.data.repository.SearchRepositoryImpl
 import com.phani.recipehub.search.domain.repository.SearchRepository
@@ -30,7 +31,10 @@ object SearchDataModule {
     )
 
     @Provides
-    fun provideSearchRepo(searchApiService: SearchApiService): SearchRepository =
-        SearchRepositoryImpl(searchApiService)
+    fun provideSearchRepo(
+        searchApiService: SearchApiService,
+        recipeDao: RecipeDao
+    ): SearchRepository =
+        SearchRepositoryImpl(searchApiService, recipeDao)
 
 }

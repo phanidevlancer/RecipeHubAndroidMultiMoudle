@@ -1,13 +1,16 @@
 package com.phani.recipehub.search.data.repository
 
+import com.phani.recipehub.search.data.local.RecipeDao
 import com.phani.recipehub.search.data.mapper.toDomain
 import com.phani.recipehub.search.data.remote.SearchApiService
 import com.phani.recipehub.search.domain.model.Recipe
 import com.phani.recipehub.search.domain.model.RecipeDetails
 import com.phani.recipehub.search.domain.repository.SearchRepository
+import kotlinx.coroutines.flow.Flow
 
 class SearchRepositoryImpl(
-    private val searchApiService: SearchApiService
+    private val searchApiService: SearchApiService,
+    private val recipeDao: RecipeDao
 ) : SearchRepository {
     override suspend fun getRecipes(s: String): Result<List<Recipe>> {
         return try {
@@ -46,4 +49,14 @@ class SearchRepositoryImpl(
             Result.failure(e)
         }
     }
+
+    override suspend fun insertRecipe(recipe: Recipe) {
+        recipeDao.insertRecipe(recipe)
+    }
+
+    override suspend fun deleteRecipe(recipe: Recipe) {
+        recipeDao.deleteRecipe(recipe)
+    }
+
+    override fun getAllRecipes(): Flow<List<Recipe>> = recipeDao.getAllRecipes()
 }
